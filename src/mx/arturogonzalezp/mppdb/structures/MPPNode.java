@@ -64,7 +64,7 @@ public class MPPNode <T extends MPPNodeItemInterface> implements Comparable<MPPN
 		this.getChildNodes().remove(index);
 	}
 	public String toString(){
-		return "Storage Key: " + this.getStorageKey() + "\nLevel: " + this.getLevel() + "\nChild Nodes Count: " + this.getChildNodesCount() + "\nItem:\n " + this.getItem().toString() + "\n";
+		return "Storage Key: " + this.getStorageKey() + "\nLevel: " + this.getLevel() + "\nChild Nodes Count: " + this.getChildNodesCount() + "\nItem:\n" + this.getItem().toString() + "\n";
 	}
 	@Override
 	public int compareTo(MPPNode<T> node) {
