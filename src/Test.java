@@ -1,3 +1,4 @@
+import mx.arturogonzalezp.mppdb.structures.MPPGraph;
 import mx.arturogonzalezp.mppdb.structures.MPPHashMap;
 import mx.arturogonzalezp.mppdb.structures.MPPNode;
 import mx.arturogonzalezp.mppdb.structures.MinHeap;
@@ -6,7 +7,8 @@ import mx.arturogonzalezp.mppdb.structures.MinHeap;
 public class Test {
 
 	public static void main(String[] args) {
-		System.out.println("Test MPPNode:\n");
+		// TEST WITHOUT GRAPH
+		/*System.out.println("Test MPPNode:\n");
 		MPPNode<NodeItemTest> nodoPadre = new MPPNode<NodeItemTest>(new NodeItemTest(12342,"Padre"));
 		nodoPadre.setLevel(0);
 		nodoPadre.addChildNode(new MPPNode<NodeItemTest>(new NodeItemTest(Long.parseLong("3432542654325435"),"Hijo")));
@@ -30,7 +32,7 @@ public class Test {
 		}
 		
 		System.out.println("Test HashMap:\n");
-		MPPHashMap hashMap = new MPPHashMap();
+		MPPHashMap<NodeItemTest> hashMap = new MPPHashMap<NodeItemTest>();
 		hashMap.put(nodoPadre);
 		hashMap.put(nodoPadre.getChildNodeAt(0));
 		hashMap.put(nodoPadre.getChildNodeAt(0).getChildNodeAt(0));
@@ -43,7 +45,16 @@ public class Test {
 		System.out.println("\nFinal Print:\n");
 		System.out.println(nodoPadre);
 		System.out.println(nodoPadre.getChildNodeAt(0));
-		System.out.println(nodoPadre.getChildNodeAt(0).getChildNodeAt(0));
+		System.out.println(nodoPadre.getChildNodeAt(0).getChildNodeAt(0));*/
+		
+		// TEST WITH GRAPH 
+		MPPGraph<NodeItemTest> graph = new MPPGraph<NodeItemTest>(new MPPNode<NodeItemTest>(new NodeItemTest(12342,"Padre")));
+		graph.addChildInActualNode(new MPPNode<NodeItemTest>(new NodeItemTest("5305943", "Hijo 1")));
+		graph.moveToChildAtPos(0);
+		graph.addChildInActualNode(new NodeItemTest(34543,"Nieto 1"));
+		graph.addChildToParent(new MPPNode<NodeItemTest>(new NodeItemTest(99848,"Hijo 2")), graph.getRootNode());
+		graph.addChildToParentID(new NodeItemTest(12345,"Nieto 2"),5305943);
+		graph.printGraphPreOrder();
 	}
 
 }

@@ -2,49 +2,63 @@ package mx.arturogonzalezp.mppdb.structures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MPPHashMap {
+public class MPPHashMap<T extends MPPNodeItemInterface> {
 	private final static int TABLE_SIZE = 1000;
-	private List<MPPNode>[] table;
+	private List<MPPNode<T>>[] table;
 	public MPPHashMap(){
-		this.table = new List[this.TABLE_SIZE];
-        for (int i = 0; i < this.TABLE_SIZE; i++){
-        	this.table[i] = new ArrayList<MPPNode>();
+		this.setTable(new List[MPPHashMap.TABLE_SIZE]);
+        for (int i = 0; i < MPPHashMap.TABLE_SIZE; i++){
+        	this.getTable()[i] = new ArrayList<MPPNode<T>>();
         }
 	}
+	public List<MPPNode<T>>[] getTable() {
+		return table;
+	}
+	public void setTable(List<MPPNode<T>>[] table) {
+		this.table = table;
+	}
 	private int getKeyForSearch(Number ID){
-    	return (int) (ID.longValue() % this.TABLE_SIZE);
+    	return (int) (ID.longValue() % MPPHashMap.TABLE_SIZE);
     }
-	public MPPNode get(Number ID) {
+	public MPPNode<T> get(Number ID) {
     	int hash = getKeyForSearch(ID);
-    	if(!this.table[hash].isEmpty()){
-    		for(int i = 0; i < this.table[hash].size(); i++){
-    			if(this.table[hash].get(i).getItem().getID().equals(ID)){
-    				return this.table[hash].get(i);
+    	if(!this.getTable()[hash].isEmpty()){
+    		for(int i = 0; i < this.getTable()[hash].size(); i++){
+    			if(this.getTable()[hash].get(i).getItem().getID().longValue() == ID.longValue()){
+    				return this.getTable()[hash].get(i);
     			}
     		}
     	}
     	return null;
     }
-	public MPPNode get(String ID){
+	public MPPNode<T> get(String ID){
 		int hash = getKeyForSearch(Long.parseLong(ID));
-    	if(!this.table[hash].isEmpty()){
-    		for(int i = 0; i < this.table[hash].size(); i++){
-    			if(this.table[hash].get(i).getItem().getID().toString().equals(ID)){
-    				return this.table[hash].get(i);
+    	if(!this.getTable()[hash].isEmpty()){
+    		for(int i = 0; i < this.getTable()[hash].size(); i++){
+    			if(this.getTable()[hash].get(i).getItem().getID().toString().equals(ID)){
+    				return this.getTable()[hash].get(i);
     			}
     		}
     	}
     	return null;
 	}
-    public void put(MPPNode node){
-    	this.table[node.getStorageKey()].add(node);
+    public void put(MPPNode<T> node){
+    	int hash = node.getStorageKey();
+    	if(!this.getTable()[hash].isEmpty()){
+    		for(int i = 0; i < this.getTable()[hash].size(); i++){
+    			if(this.getTable()[hash].get(i).getItem().getID().equals(node.getItem().getID())){
+    				return;
+    			}
+    		}
+    	}
+    	this.getTable()[node.getStorageKey()].add(node);
     }
     public boolean remove(Number ID){
     	int hash = getKeyForSearch(ID);
-    	if(!this.table[hash].isEmpty()){
-    		for(int i = 0; i < this.table[hash].size(); i++){
-    			if(this.table[hash].get(i).getItem().getID().equals(ID)){
-    				this.table[hash].remove(i);
+    	if(!this.getTable()[hash].isEmpty()){
+    		for(int i = 0; i < this.getTable()[hash].size(); i++){
+    			if(this.getTable()[hash].get(i).getItem().getID().equals(ID)){
+    				this.getTable()[hash].remove(i);
     				return true;
     			}
     		}
@@ -53,10 +67,10 @@ public class MPPHashMap {
     }
     public boolean remove(String ID){
     	int hash = getKeyForSearch(Long.parseLong(ID));
-    	if(!this.table[hash].isEmpty()){
-    		for(int i = 0; i < this.table[hash].size(); i++){
-    			if(this.table[hash].get(i).getItem().getID().toString().equals(ID)){
-    				this.table[hash].remove(i);
+    	if(!this.getTable()[hash].isEmpty()){
+    		for(int i = 0; i < this.getTable()[hash].size(); i++){
+    			if(this.getTable()[hash].get(i).getItem().getID().toString().equals(ID)){
+    				this.getTable()[hash].remove(i);
     				return true;
     			}
     		}
@@ -64,11 +78,11 @@ public class MPPHashMap {
     	return false;
     }
     public void printAllHashMap(){
-    	for (int i = 0; i < this.TABLE_SIZE; i++) {
-    		if(!this.table[i].isEmpty()){
+    	for (int i = 0; i < MPPHashMap.TABLE_SIZE; i++) {
+    		if(!this.getTable()[i].isEmpty()){
     			System.out.println("Hash: " + i);
-				for (int j = 0; j < this.table[i].size(); j++) {
-					System.out.println(this.table[i].get(j).getItem().getID());
+				for (int j = 0; j < this.getTable()[i].size(); j++) {
+					System.out.println(this.getTable()[i].get(j).getItem().getID());
 				}
     		}
 		}
