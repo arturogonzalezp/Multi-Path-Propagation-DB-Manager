@@ -3,7 +3,7 @@ package mx.arturogonzalezp.mppdb.structures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MPPNode <T extends Comparable<T>> implements Comparable<MPPNode<T>>{
+public class MPPNode <T extends MPPNodeItemInterface> implements Comparable<MPPNode<T>>{
 	private List<MPPNode<T>> childNodes;
 	private T item;
 	private int storageKey;
@@ -17,10 +17,7 @@ public class MPPNode <T extends Comparable<T>> implements Comparable<MPPNode<T>>
 	public MPPNode(T nodeItem){
 		this();
 		this.setItem(nodeItem);
-	}
-	public MPPNode(T nodeItem,int storageKey){
-		this(nodeItem);
-		this.setStorageKey(storageKey);
+		this.setStorageKey(createStorageKey());
 	}
 	public List<MPPNode<T>> getChildNodes() {
 		return childNodes;
@@ -45,6 +42,9 @@ public class MPPNode <T extends Comparable<T>> implements Comparable<MPPNode<T>>
 	}
 	public void setLevel(int level) {
 		this.level = level;
+	}
+	private int createStorageKey(){
+		return (int) (this.getItem().getID().longValue() % 1000);
 	}
 	public boolean addChildNode(MPPNode<T> childNode){
 		if(this.getLevel() > -1){
