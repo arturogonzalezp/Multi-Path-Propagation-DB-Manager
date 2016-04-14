@@ -5,6 +5,7 @@ import java.util.List;
 
 public class MPPNode <T extends MPPNodeItemInterface> implements Comparable<MPPNode<T>>{
 	private List<MPPNode<T>> childNodes;
+	private MPPNode<T> parentNode;
 	private T item;
 	private int storageKey;
 	private int level;
@@ -13,6 +14,7 @@ public class MPPNode <T extends MPPNodeItemInterface> implements Comparable<MPPN
 		this.setChildNodes(new ArrayList<MPPNode<T>>());
 		this.setStorageKey(0);
 		this.setLevel(-1);
+		this.setParentNode(null);
 	}
 	public MPPNode(T nodeItem){
 		this();
@@ -43,12 +45,19 @@ public class MPPNode <T extends MPPNodeItemInterface> implements Comparable<MPPN
 	public void setLevel(int level) {
 		this.level = level;
 	}
+	public MPPNode<T> getParentNode() {
+		return parentNode;
+	}
+	public void setParentNode(MPPNode<T> parentNode) {
+		this.parentNode = parentNode;
+	}
 	private int createStorageKey(){
 		return (int) (this.getItem().getID().longValue() % 1000);
 	}
 	public boolean addChildNode(MPPNode<T> childNode){
 		if(this.getLevel() > -1){
 			childNode.setLevel(this.getLevel()+1);
+			childNode.setParentNode(this);
 			this.getChildNodes().add(childNode);
 			return true;
 		}

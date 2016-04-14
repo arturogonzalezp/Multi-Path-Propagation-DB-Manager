@@ -1,3 +1,11 @@
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+
 import mx.arturogonzalezp.mppdb.structures.MPPGraph;
 import mx.arturogonzalezp.mppdb.structures.MPPHashMap;
 import mx.arturogonzalezp.mppdb.structures.MPPNode;
@@ -48,13 +56,27 @@ public class Test {
 		System.out.println(nodoPadre.getChildNodeAt(0).getChildNodeAt(0));*/
 		
 		// TEST WITH GRAPH 
-		MPPGraph<NodeItemTest> graph = new MPPGraph<NodeItemTest>(new MPPNode<NodeItemTest>(new NodeItemTest(12342,"Padre")));
+		/*MPPGraph<NodeItemTest> graph = new MPPGraph<NodeItemTest>(new MPPNode<NodeItemTest>(new NodeItemTest(12342,"Padre")));
 		graph.addChildInActualNode(new MPPNode<NodeItemTest>(new NodeItemTest("5305943", "Hijo 1")));
 		graph.moveToChildAtPos(0);
 		graph.addChildInActualNode(new NodeItemTest(34543,"Nieto 1"));
 		graph.addChildToParent(new MPPNode<NodeItemTest>(new NodeItemTest(99848,"Hijo 2")), graph.getRootNode());
 		graph.addChildToParentID(new NodeItemTest(12345,"Nieto 2"),5305943);
-		graph.printGraphPreOrder();
+		graph.printGraphPreOrder();*/
+		
+		// Test save file
+		List<String> lines = Arrays.asList("The first line", "The second line");
+		Path file = Paths.get("the-file-name.json");
+		try {
+			//Files.write(file, lines, Charset.forName("UTF-8"));
+			lines = Files.readAllLines(file, Charset.forName("UTF-8"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		for (String line : lines) {
+			System.out.println(line);
+		}
+		
 	}
 
 }

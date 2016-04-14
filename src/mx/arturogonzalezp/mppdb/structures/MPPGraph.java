@@ -73,6 +73,11 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 	public void resetPointer(){
 		this.setPointerNode(this.getRootNode());
 	}
+	public void moveToParent(){
+		if(this.getPointerNode() != this.getRootNode()){
+			this.setPointerNode(this.getPointerNode().getParentNode());
+		}
+	}
 	public void moveToChildAtPos(int index){
 		try {
 			this.setPointerNode(this.getPointerNode().getChildNodeAt(index));
@@ -83,10 +88,10 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 	public int getChildNodesCount(){
 		return this.getPointerNode().getChildNodesCount();
 	}
-	public MPPNode<T> searchNode(Number ID){
+	public MPPNode<T> searchNodeByID(Number ID){
 		return this.getHashMap().get(ID);
 	}
-	public MPPNode<T> searchNode(String ID){
+	public MPPNode<T> searchNodeByID(String ID){
 		return this.getHashMap().get(ID);
 	}
 	public void addChildInActualNode(MPPNode<T> newNode){
@@ -111,7 +116,7 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 		this.getInsertionStack().add(0,new MPPNodeInsertionPair<T>(parentID, childNode));
 		MPPNode<T> tempParentNode = null;
 		for (int i = 0; i < this.getInsertionStack().size(); i++) {
-			tempParentNode = this.searchNode(this.getInsertionStack().get(i).getParentID());
+			tempParentNode = this.searchNodeByID(this.getInsertionStack().get(i).getParentID());
 			if(tempParentNode != null){
 				this.addChildToParent(this.getInsertionStack().get(i).getNode(), tempParentNode);
 				this.getInsertionStack().remove(i);
@@ -123,7 +128,7 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 		this.getInsertionStack().add(0,new MPPNodeInsertionPair<T>(parentID, new MPPNode<T>(childNodeItem)));
 		MPPNode<T> tempParentNode = null;
 		for (int i = 0; i < this.getInsertionStack().size(); i++) {
-			tempParentNode = this.searchNode(this.getInsertionStack().get(i).getParentID());
+			tempParentNode = this.searchNodeByID(this.getInsertionStack().get(i).getParentID());
 			if(tempParentNode != null){
 				this.addChildToParent(this.getInsertionStack().get(i).getNode(), tempParentNode);
 				this.getInsertionStack().remove(i);
@@ -135,7 +140,7 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 		this.getInsertionStack().add(0,new MPPNodeInsertionPair<T>(parentID, new MPPNode<T>(childNodeItem)));
 		MPPNode<T> tempParentNode = null;
 		for (int i = 0; i < this.getInsertionStack().size(); i++) {
-			tempParentNode = this.searchNode(this.getInsertionStack().get(i).getParentID());
+			tempParentNode = this.searchNodeByID(this.getInsertionStack().get(i).getParentID());
 			if(tempParentNode != null){
 				this.addChildToParent(this.getInsertionStack().get(i).getNode(), tempParentNode);
 				this.getInsertionStack().remove(i);
