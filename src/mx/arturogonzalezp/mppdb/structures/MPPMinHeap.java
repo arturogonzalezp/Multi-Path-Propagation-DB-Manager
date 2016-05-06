@@ -2,16 +2,16 @@ package mx.arturogonzalezp.mppdb.structures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MinHeap<T extends Comparable<T>> {
+public class MPPMinHeap<T extends Comparable<T>> {
 	private int heapSize;
     private int length;
     private List<T> array;
-    public MinHeap() {
+    public MPPMinHeap() {
         this.length = 0;
         this.heapSize = 0;
         this.array = new ArrayList<T>();
     }
-    public MinHeap(int length) {
+    public MPPMinHeap(int length) {
         this.length = length;
         this.heapSize = 0;
         this.array = new ArrayList<T>();

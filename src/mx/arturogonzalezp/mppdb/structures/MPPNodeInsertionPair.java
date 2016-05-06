@@ -1,6 +1,6 @@
 package mx.arturogonzalezp.mppdb.structures;
 
-public class MPPNodeInsertionPair<T extends MPPNodeItemInterface> {
+public class MPPNodeInsertionPair<T extends MPPItemInterface> {
 	private Number parentID;
 	private MPPNode<T> node;
 	public MPPNodeInsertionPair(Number parentID, MPPNode<T> node){

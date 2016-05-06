@@ -1,6 +1,6 @@
 package mx.arturogonzalezp.mppdb.structures;
 
-public interface MPPNodeItemInterface extends Comparable<MPPNodeItemInterface>{
+public interface MPPItemInterface extends Comparable<MPPItemInterface>{
 	public Number getID();
 	public void setID(Number ID);
 }

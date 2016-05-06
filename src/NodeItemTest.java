@@ -1,7 +1,9 @@
-import mx.arturogonzalezp.mppdb.structures.MPPNodeItemInterface;
+import java.util.Date;
+
+import mx.arturogonzalezp.mppdb.structures.MPPItemInterface;
 
 
-public class NodeItemTest implements MPPNodeItemInterface{
+public class NodeItemTest implements MPPItemInterface{
 	private Number ID;
 	private String title;
 	public NodeItemTest(Number ID, String title){
@@ -29,7 +31,7 @@ public class NodeItemTest implements MPPNodeItemInterface{
 	}
 
 	@Override
-	public int compareTo(MPPNodeItemInterface o) {
+	public int compareTo(MPPItemInterface o) {
 		NodeItemTest test = (NodeItemTest) o;
 		if(this.getTitle().compareTo(test.getTitle()) > 0){
 			return 1;

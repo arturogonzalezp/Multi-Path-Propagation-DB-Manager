@@ -1,9 +1,10 @@
 package mx.arturogonzalezp.mppdb.structures;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class MPPNode <T extends MPPNodeItemInterface> implements Comparable<MPPNode<T>>{
+public class MPPNode <T extends MPPItemInterface> implements Comparable<MPPNode<T>>{
 	private List<MPPNode<T>> childNodes;
 	private MPPNode<T> parentNode;
 	private T item;
@@ -52,13 +53,14 @@ public class MPPNode <T extends MPPNodeItemInterface> implements Comparable<MPPN
 		this.parentNode = parentNode;
 	}
 	private int createStorageKey(){
-		return (int) (this.getItem().getID().longValue() % 1000);
+		return (int) (this.getItem().getID().longValue() % MPPHashMap.TABLE_SIZE);
 	}
 	public boolean addChildNode(MPPNode<T> childNode){
 		if(this.getLevel() > -1){
 			childNode.setLevel(this.getLevel()+1);
 			childNode.setParentNode(this);
 			this.getChildNodes().add(childNode);
+			Collections.sort(this.getChildNodes());
 			return true;
 		}
 		return false;

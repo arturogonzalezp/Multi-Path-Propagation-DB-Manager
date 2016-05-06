@@ -3,18 +3,20 @@ package mx.arturogonzalezp.mppdb.structures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MPPGraph<T extends MPPNodeItemInterface>{
+public class MPPGraph<T extends MPPItemInterface>{
 	private MPPNode<T> rootNode;
 	private MPPNode<T> pointerNode;
 	private List<MPPNodeInsertionPair<T>> insertionStack;
 	private MPPHashMap<T> hashMap;
 	private String graphTitle;
+	private int nodesCount;
 	public MPPGraph(){
 		this.setInsertionStack(new ArrayList<MPPNodeInsertionPair<T>>());
 		this.setRootNode(null);
 		this.setPointerNode(null);
 		this.setHashMap(new MPPHashMap<T>());
 		this.setGraphTitle("MPP Graph");
+		this.setNodesCount(0);
 	}
 	public MPPGraph(String title){
 		this();
@@ -25,6 +27,7 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 		this.setRootNode(rootNode);
 		this.setPointerNode(rootNode);
 		this.getHashMap().put(rootNode);
+		this.setNodesCount(this.getNodesCount()+1);
 	}
 	public MPPGraph(T rootItem){
 		this(new MPPNode<T>(rootItem));
@@ -39,6 +42,13 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 	}
 	public MPPNode<T> getRootNode() {
 		return rootNode;
+	}
+	public boolean isEmpty(){
+		if(this.getRootNode() == null){
+			return true;
+		}else{
+			return false;
+		}
 	}
 	public void setRootNode(MPPNode<T> rootNode){
 		this.rootNode = rootNode;
@@ -70,6 +80,12 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 	public void setHashMap(MPPHashMap<T> hashMap) {
 		this.hashMap = hashMap;
 	}
+	public int getNodesCount() {
+		return nodesCount;
+	}
+	public void setNodesCount(int nodesCount) {
+		this.nodesCount = nodesCount;
+	}
 	public void resetPointer(){
 		this.setPointerNode(this.getRootNode());
 	}
@@ -97,20 +113,24 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 	public void addChildInActualNode(MPPNode<T> newNode){
 		this.getPointerNode().addChildNode(newNode);
 		this.getHashMap().put(newNode);
+		this.setNodesCount(this.getNodesCount()+1);
 	}
 	public void addChildInActualNode(T childNodeItem){
 		MPPNode<T> tempNode = new MPPNode<T>(childNodeItem);
 		this.getPointerNode().addChildNode(tempNode);
 		this.getHashMap().put(tempNode);
+		this.setNodesCount(this.getNodesCount()+1);
 	}
 	public void addChildToParent(MPPNode<T> childNode, MPPNode<T> parentNode){
 		parentNode.addChildNode(childNode);
 		this.getHashMap().put(childNode);
+		this.setNodesCount(this.getNodesCount()+1);
 	}
 	public void addChildToParent(T childNodeItem, MPPNode<T> parentNode){
 		MPPNode<T> tempNode = new MPPNode<T>(childNodeItem);
 		parentNode.addChildNode(tempNode);
 		this.getHashMap().put(tempNode);
+		this.setNodesCount(this.getNodesCount()+1);
 	}
 	public void addChildToParentID(MPPNode<T> childNode, Number parentID){
 		this.getInsertionStack().add(0,new MPPNodeInsertionPair<T>(parentID, childNode));
@@ -148,6 +168,22 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 			tempParentNode = null;
 		}
 	}
+	public MPPAdjacencyMatrix<T> getAdjacencyMatrix(){
+		return new MPPAdjacencyMatrix<T>(this.getPreorderList());
+	}
+	public List<MPPNode<T>> getPreorderList(){
+		List<MPPNode<T>> tempPreorderList = new ArrayList<MPPNode<T>>();
+		this.getPreorderListRecursive(this.getRootNode(),tempPreorderList);
+		return tempPreorderList;
+	}
+	private void getPreorderListRecursive(MPPNode<T> node,List<MPPNode<T>> preorderList){
+		if(node != null){
+			preorderList.add(node);
+			for(MPPNode<T> n : node.getChildNodes()){
+				this.getPreorderListRecursive(n, preorderList);
+			}
+		}
+	}
 	public void printGraphPreOrder(){
 		this.printGraphPreOrderRecursive(this.getRootNode());
 	}
@@ -156,7 +192,6 @@ public class MPPGraph<T extends MPPNodeItemInterface>{
 			System.out.println(node);
 			for(MPPNode<T> n : node.getChildNodes()){
 				this.printGraphPreOrderRecursive(n);
-				
 			}
 		}
 	}

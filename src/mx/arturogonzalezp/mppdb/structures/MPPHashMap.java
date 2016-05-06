@@ -2,8 +2,8 @@ package mx.arturogonzalezp.mppdb.structures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MPPHashMap<T extends MPPNodeItemInterface> {
-	private final static int TABLE_SIZE = 1000;
+public class MPPHashMap<T extends MPPItemInterface> {
+	public static final int TABLE_SIZE = 100;
 	private List<MPPNode<T>>[] table;
 	public MPPHashMap(){
 		this.setTable(new List[MPPHashMap.TABLE_SIZE]);
