@@ -1,7 +1,7 @@
 package mx.arturogonzalezp.mppdb.structures;
 
-public class EmptyDBException extends Exception{
-	public EmptyDBException(){
+public class MPPEmptyDBException extends Exception{
+	public MPPEmptyDBException(){
 		super("The database is empty");
 	}
 }

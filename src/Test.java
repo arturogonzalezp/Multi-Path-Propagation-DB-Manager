@@ -1,7 +1,12 @@
-import mx.arturogonzalezp.mppdb.structures.EmptyDBException;
+import java.util.List;
+
+import mx.arturogonzalezp.mppdb.structures.MPPDifferentDBItemType;
+import mx.arturogonzalezp.mppdb.structures.MPPEmptyDBException;
 import mx.arturogonzalezp.mppdb.structures.MPPGraph;
 import mx.arturogonzalezp.mppdb.structures.MPPManager;
+import mx.arturogonzalezp.mppdb.structures.MPPNoDBInPathException;
 import mx.arturogonzalezp.mppdb.structures.MPPNode;
+import mx.arturogonzalezp.mppdb.structures.MPPOpenDBException;
 
 public class Test {
 
@@ -59,11 +64,11 @@ public class Test {
 		graph.getAdjacencyMatrix().printMatrix();*/
 		
 		//MPPManager test
-		MPPManager<NodeItemTest> db = new MPPManager<NodeItemTest>();
+		MPPManager<NodeItemTest> db = new MPPManager<NodeItemTest>(NodeItemTest.class,NodeItemTest[].class);
 		System.out.println(db + "\n");
 		try {
 			db.saveDB();
-		} catch (EmptyDBException e) {
+		} catch (MPPEmptyDBException e) {
 			System.err.println(e.getMessage() + "\n");
 		}
 		db.newDB(new NodeItemTest(12342,"Padre"), "MyDb");
@@ -77,10 +82,10 @@ public class Test {
 			System.out.println(tempItem);
 		}
 		System.out.println();
-		db.addItem(new NodeItemTest(123,"Hijo 1"), 12342);
+		db.addItem(new NodeItemTest(123,"Hijo"), 12342);
 		db.addItem(new NodeItemTest("1236", "Nieto 1"),"123");
-		db.addItem(new NodeItemTest(321, "Nieto 2"), 123);
-		db.addItem(new NodeItemTest(321, "Hijo 2"), 12342);
+		db.addItem(new NodeItemTest(4321, "Nieto 2"), 123);
+		db.addItem(new NodeItemTest(321, "Hijo"), 12342);
 		for (NodeItemTest itemOfGraph : db.getAllItems()) {
 			System.out.println(itemOfGraph);
 		}
@@ -92,12 +97,28 @@ public class Test {
 		System.out.println();
 		try {
 			db.saveDB();
-		} catch (EmptyDBException e) {
+		} catch (MPPEmptyDBException e) {
 			e.printStackTrace();
 		}
 		db.closeDB();
 		System.out.println(db + "\n");
-		
+		try {
+			db.openDB("MyDb");
+		} catch (MPPNoDBInPathException | MPPOpenDBException | MPPDifferentDBItemType e) {
+			e.printStackTrace();
+		}
+		db.addItem(new NodeItemTest(989, "Nieto 3"), db.searchByID(321));
+		try {
+			db.saveDB();
+		} catch (MPPEmptyDBException e) {
+			e.printStackTrace();
+		}
+		System.out.println("\nSearch By:");
+		//List<NodeItemTest> searchChildItems = db.searchBy("ID", (Number)321);
+		List<NodeItemTest> searchChildItems = db.searchBy("title", "Hijo");
+		for (NodeItemTest nodeItemTest : searchChildItems) {
+			System.out.println(nodeItemTest);
+		}
 		
 		// Load file
 		/*Path filePath = Paths.get("the-file-name.json");

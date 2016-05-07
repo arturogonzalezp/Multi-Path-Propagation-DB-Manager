@@ -171,6 +171,37 @@ public class MPPGraph<T extends MPPItemInterface>{
 	public MPPAdjacencyMatrix<T> getAdjacencyMatrix(){
 		return new MPPAdjacencyMatrix<T>(this.getPreorderList());
 	}
+	public <V> List<MPPNode<T>> searchNodesBy(String property, V value){
+		List<MPPNode<T>> tempNodeList = new ArrayList<MPPNode<T>>();
+		this.searchNodeByPropertyRecursive(this.getRootNode(), tempNodeList, property, value);
+		return tempNodeList;
+	}
+	private <V> void searchNodeByPropertyRecursive(MPPNode<T> node, List<MPPNode<T>> itemsList, String property, V value){
+		if(node != null){
+			if(node.getItem().valueEquals(property, value)){
+				itemsList.add(node);
+			}
+			for (MPPNode<T> n : node.getChildNodes()) {
+				this.searchNodeByPropertyRecursive(n, itemsList, property, value);
+			}
+		}
+	}
+	public List<MPPEdge> getEdgeList(){
+		List<MPPEdge> tempEdgeList = new ArrayList<MPPEdge>();
+		this.getEdgeListRecursive(this.getRootNode(), tempEdgeList);
+		return tempEdgeList;
+	}
+	private void getEdgeListRecursive(MPPNode<T> node, List<MPPEdge> edgeList){
+		if(node != null){
+			for (MPPNode<T> n : node.getChildNodes()) {
+				edgeList.add(new MPPEdge(n.getItem().getID(),node.getItem().getID()));
+			}
+			for (MPPNode<T> n : node.getChildNodes()) {
+				this.getEdgeListRecursive(n, edgeList);
+			}
+			
+		}
+	}
 	public List<MPPNode<T>> getPreorderList(){
 		List<MPPNode<T>> tempPreorderList = new ArrayList<MPPNode<T>>();
 		this.getPreorderListRecursive(this.getRootNode(),tempPreorderList);
